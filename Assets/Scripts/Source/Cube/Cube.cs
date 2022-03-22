@@ -15,6 +15,7 @@ namespace Cube
         }
         private void Update() {
             if(Input.GetKeyDown(KeyCode.Space)){
+                Debug.Log("Rotate");
                 m_currentSide.SetRotate(false, 2f);
             } 
         }

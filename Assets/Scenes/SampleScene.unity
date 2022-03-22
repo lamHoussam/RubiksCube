@@ -432,7 +432,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 0, z: -1}
   center: {fileID: 108373807}
   color: 1
   m_cube: {fileID: 0}
@@ -967,7 +966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 1, z: 0}
   center: {fileID: 1000695316}
   color: 4
   m_cube: {fileID: 0}
@@ -1098,7 +1096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6628b19e5fca86f4abebcbb06ed45eef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 2
+  m_speed: 75
   m_distance: 10
   m_lookAt: {fileID: 1843106830}
   canRotate: 1
@@ -1444,7 +1442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: -1, z: 0}
   center: {fileID: 1363722166}
   color: 5
   m_cube: {fileID: 0}
@@ -1580,7 +1577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 0, z: 1}
   center: {fileID: 2134068123}
   color: 0
   m_cube: {fileID: 0}
@@ -1983,7 +1979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 0, z: -1}
   center: {fileID: 1469887243}
   color: 2
   m_cube: {fileID: 0}
@@ -2910,7 +2905,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01b2ce38ac8942847943ddc32cb7cdb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationAxis: {x: 0, y: 0, z: 1}
   center: {fileID: 260536472}
   color: 3
   m_cube: {fileID: 0}

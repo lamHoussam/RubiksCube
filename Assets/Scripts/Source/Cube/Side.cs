@@ -5,7 +5,6 @@ using UnityEngine;
 namespace Cube {
     public class Side : MonoBehaviour
     {
-        [SerializeField] private Vector3 rotationAxis;
         [SerializeField] private Center center;
         public Center m_center => center;
         [SerializeField] private FaceColor color;
@@ -16,22 +15,38 @@ namespace Cube {
         private float m_targetAngle;
         private float m_lerpSpeed;
         private bool m_startRotation = false;
+        private float m_angle, m_coeff;
         private void Start() {
             m_cube = gameObject.GetComponentInParent<Cube>();
         }
 
         public void SetRotate(bool reverse, float lerpSpeed) {
-            m_targetAngle = reverse ? -90 : 90;
-            
-            m_rotationVector = transform.eulerAngles + rotationAxis * m_targetAngle;
+            if(m_startRotation) return;
+            m_coeff = reverse ? -1 : 1;
+            m_targetAngle = m_coeff * 90;
+
+            //m_rotationVector = transform.eulerAngles + m_rotationAxis * m_targetAngle;
             m_lerpSpeed = lerpSpeed;
 
             m_startRotation = true;
-            transform.eulerAngles = m_rotationVector;
+
+            m_angle = 0;
+                        
+        }
+
+        public void Rotate(){
+            transform.Rotate(transform.forward, m_coeff * m_lerpSpeed, Space.World);
+
+            //transform.eulerAngles += m_coeff * m_lerpSpeed * m_rotationAxis;
+            m_angle += m_coeff * m_lerpSpeed;
+
+            if(Mathf.Abs(m_angle) >= 90) m_startRotation = false;
         }
 
         private void Update() {
             if(m_startRotation){
+                Debug.Log("Rotating");
+                Rotate();
             }
         }
 

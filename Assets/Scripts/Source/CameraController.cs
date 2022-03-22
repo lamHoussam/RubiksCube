@@ -18,8 +18,8 @@ public class CameraController : MonoBehaviour
             float vertical = Input.GetAxisRaw("Vertical");
 
             transform.position = m_lookAt.position - (transform.forward * m_distance);
-            transform.RotateAround(m_lookAt.position, transform.up, horizontal * m_speed);
-            transform.RotateAround(m_lookAt.position, transform.right, vertical * m_speed);
+            transform.RotateAround(m_lookAt.position, transform.up, horizontal * m_speed * Time.deltaTime);
+            transform.RotateAround(m_lookAt.position, transform.right, vertical * m_speed * Time.deltaTime);
         }
     }
 }
