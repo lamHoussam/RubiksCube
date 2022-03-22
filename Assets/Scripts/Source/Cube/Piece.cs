@@ -14,9 +14,9 @@ namespace Cube{
         public Cube m_cube { get; private set; }
         public virtual void Awake(){
             m_cube = gameObject.GetComponentInParent<Cube>();
-            GetFaces();
+            SetFaces();
         }
-        protected abstract void GetFaces();
+        protected abstract void SetFaces();
     }
 
 }

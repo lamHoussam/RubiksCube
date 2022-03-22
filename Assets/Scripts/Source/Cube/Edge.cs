@@ -9,7 +9,7 @@ namespace Cube{
         {
             base.Awake();
         }
-        protected override void GetFaces()
+        protected override void SetFaces()
         {
             
         }

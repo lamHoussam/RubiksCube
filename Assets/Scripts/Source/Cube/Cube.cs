@@ -14,11 +14,9 @@ namespace Cube
             m_currentSide = m_sides[0];
         }
         private void Update() {
-            if(Input.GetKey(KeyCode.Space)){
-                m_currentSide.Rotate(false, 2f);
+            if(Input.GetKeyDown(KeyCode.Space)){
+                m_currentSide.SetRotate(false, 2f);
             } 
-            if(Input.GetKeyUp(KeyCode.Space))
-                DeSelectSide();
         }
 
         public void SelectSide(FaceColor fColor){
@@ -30,13 +28,13 @@ namespace Cube
                 }
             }
 
-            foreach(var piece in m_currentSide.m_pieces){
+            foreach(var piece in m_currentSide.m_center.m_piecesBeside){
                 piece.transform.SetParent(m_currentSide.transform);
             }
         }
 
         public void DeSelectSide(){
-            foreach(var piece in m_currentSide.m_pieces){
+            foreach(var piece in m_currentSide.m_center.m_piecesBeside){
                 piece.transform.SetParent(this.transform);
             }
         }
