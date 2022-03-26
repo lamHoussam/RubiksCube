@@ -32,19 +32,20 @@ namespace Cube
         }
         private void Update() {
             if(m_startScramble){
-                Scramble();
+                ApplyScramble();
             }            
             if(Input.GetKeyDown(KeyCode.Space) && !m_rotationLocked){
 
-                m_currentSide.SetRotate(!Input.GetKey(KeyCode.LeftShift), m_speed);
+                m_currentSide.Rotate(!Input.GetKey(KeyCode.LeftShift), m_speed);
                 m_audioSource.PlayOneShot(m_rotationSound);
             } 
         }
 
+        /// <summary> Selects the side to rotate (needs to be called before rotating) </summary>
+        /// <param name="fColor"> Color of side to select </param>
         public void SelectSide(FaceColor fColor){
             if(m_rotationLocked) return;
 
-            
             foreach(var side in m_sides){
                 if(side.m_color == fColor){
                     m_currentSide = side;
@@ -61,6 +62,8 @@ namespace Cube
             }
         }
 
+        /// <summary> Selects the side to rotate (needs to be called before rotating) </summary>
+        /// <param name="side"> Side to select </param>
         public void SelectSide(Side side){
             if(m_rotationLocked) return;
 
@@ -73,14 +76,16 @@ namespace Cube
             }
         }
 
-        public void DeSelectSide(){
-            if(m_rotationLocked) return;
-            foreach(var piece in m_currentSide.m_center.m_piecesBeside){
-                piece.transform.SetParent(this.transform);
-            }
-        }
 
-        public void SetScramble(){
+        // public void DeSelectSide(){
+        //     if(m_rotationLocked) return;
+        //     foreach(var piece in m_currentSide.m_center.m_piecesBeside){
+        //         piece.transform.SetParent(this.transform);
+        //     }
+        // }
+
+        /// <summary> Initialises all needed components to scramble cube </summary>
+        public void Scramble(){
             if(m_startScramble) return;
             
             moves = new Queue<Side>();
@@ -97,6 +102,7 @@ namespace Cube
             Debug.Log(moves);
         }
 
+        /// <summary> Reset cube to initial state </summary>
         public void Reset(){
             foreach(var side in m_sides){
                 foreach(var piece in side.m_center.m_piecesBeside){
@@ -111,13 +117,14 @@ namespace Cube
 
         }
 
-        public void Scramble() {
+        /// <summary> Apply scramble through time </summary>
+        private void ApplyScramble() {
             if(m_rotationLocked) return ; 
 
             Side moveSide = moves.Dequeue();
             SelectSide(moveSide);
 
-            m_currentSide.SetRotate(UnityEngine.Random.Range(0, 2) == 0, m_speed);
+            m_currentSide.Rotate(UnityEngine.Random.Range(0, 2) == 0, m_speed);
 
             m_startScramble = moves.Count > 0;
         }

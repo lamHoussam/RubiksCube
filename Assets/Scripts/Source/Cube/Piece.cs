@@ -22,7 +22,16 @@ namespace Cube{
             m_initialPosition = transform.position;
             m_initialRotation = transform.eulerAngles;
         }
-        protected abstract void SetFaces();
+
+        /// <summary> Get all faces of a piece </summary>
+        protected void SetFaces(){
+            Face[] f = this.gameObject.GetComponentsInChildren<Face>();
+            
+            m_faces = new List<Face>();
+            foreach(var face in f) m_faces.Add(face);
+        }
+
+        /// <summary> Reset piece's position </summary>
         public void Reset(){
             transform.position = m_initialPosition;
             transform.eulerAngles = m_initialRotation;

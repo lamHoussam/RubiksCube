@@ -11,19 +11,25 @@ namespace Cube {
         [SerializeField] private Cube m_cube;
         public FaceColor m_color => color;
 
-        [SerializeField] private Vector3 m_targetRotation;
-        private float m_targetAngle;
-        private float m_lerpSpeed;
-        private bool m_startRotation = false;
+        private Vector3 m_targetRotation, m_rotationAxis;
+        private float m_targetAngle, m_speed;
         private float m_angle, m_coeff;
-        private Vector3 m_rotationAxis;
+        private bool m_startRotation = false;
+        
         private void Start() {
             m_cube = gameObject.GetComponentInParent<Cube>();
 
             m_rotationAxis = -GetComponent<BoxCollider>().center.normalized; 
         }
 
-        public void SetRotate(bool reverse, float lerpSpeed) {
+        private void Update() {
+            if(m_startRotation) ApplyRotation();
+        }
+
+        /// <summary> Initialise this side's rotation </summary>
+        /// <param name="reverse"> If true rotate couterclockwise else clockwise </param>
+        /// <param name="speed"> Speed to rotate the side at <param>
+        public void Rotate(bool reverse, float speed) {
             if(m_startRotation) return;
             m_coeff = reverse ? 1 : -1;
             m_targetAngle = m_coeff * 90;
@@ -31,20 +37,20 @@ namespace Cube {
             m_targetRotation = transform.eulerAngles + m_rotationAxis * m_targetAngle;
 
             Debug.Log(transform.forward);
-            m_lerpSpeed = lerpSpeed;
+            m_speed = speed;
 
             m_startRotation = true;
             m_cube.m_rotationLocked = true;
 
             m_angle = 0;
 
-            //m_angle = transform.rotation + transform.forward * 90;
         }
 
-        public void Rotate(){
+        /// <summary> Apply initialised rotation </summary>
+        private void ApplyRotation(){
             if(m_angle < 90){
-                transform.Rotate(transform.forward, m_coeff * m_lerpSpeed * Time.deltaTime, Space.World);
-                m_angle += m_coeff * m_lerpSpeed * Time.deltaTime;
+                transform.Rotate(transform.forward, m_coeff * m_speed * Time.deltaTime, Space.World);
+                m_angle += m_coeff * m_speed * Time.deltaTime;
             }
             
             if(Mathf.Abs(m_angle) >= 90){ 
@@ -52,12 +58,7 @@ namespace Cube {
                 OnStopRotation(); 
             }
         }
-
-        private void Update() {
-            if(m_startRotation) Rotate();
-        }
-
-        public void OnStopRotation(){
+        private void OnStopRotation(){
             Debug.Log("End");
             m_startRotation = false;
             m_cube.m_rotationLocked = false;
@@ -66,15 +67,7 @@ namespace Cube {
         private void OnMouseDown() {
             Debug.Log($"Hit : {m_color}");
             m_cube.SelectSide(m_color);
-        }
-
-        private Vector3 ProdByMember(Vector3 a, Vector3 b){
-            return new Vector3(
-                a.x * b.x, a.y * b.y, a.z * b.z
-            );
-        }
-
-        
+        }        
     }
 
 }   

@@ -13,12 +13,6 @@ namespace Cube{
             m_piecesBeside = new List<Piece>();
             m_piecesBeside.Add(this);
         }
-        protected override void SetFaces(){
-            Face[] f = this.gameObject.GetComponentsInChildren<Face>();
-            
-            m_faces = new List<Face>();
-            foreach(var face in f) m_faces.Add(face);
-        }
         
         private void OnTriggerEnter(Collider other) {
             

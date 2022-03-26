@@ -8,14 +8,6 @@ namespace Cube{
         {
             base.Awake();
         }
-
-        protected override void SetFaces()
-        {
-            Face[] f = this.gameObject.GetComponentsInChildren<Face>();
-            
-            m_faces = new List<Face>();
-            foreach(var face in f) m_faces.Add(face);
-        }
     }
 
 }
