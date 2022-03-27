@@ -31,7 +31,7 @@ namespace Cube
             moves = new Queue<Side>();
         }
         private void Update() {
-            if(m_startScramble){
+            if(m_startScramble && !m_rotationLocked){
                 ApplyScramble();
             }            
             if(Input.GetKeyDown(KeyCode.Space) && !m_rotationLocked){
@@ -65,7 +65,7 @@ namespace Cube
         /// <summary> Selects the side to rotate (needs to be called before rotating) </summary>
         /// <param name="side"> Side to select </param>
         public void SelectSide(Side side){
-            if(m_rotationLocked) return;
+            //if(m_rotationLocked) return;
 
             m_currentSide = side;
             MeshRenderer rend = m_currentSide.m_center.gameObject.GetComponentsInChildren<MeshRenderer>()[1];
@@ -77,12 +77,12 @@ namespace Cube
         }
 
 
-        // public void DeSelectSide(){
-        //     if(m_rotationLocked) return;
-        //     foreach(var piece in m_currentSide.m_center.m_piecesBeside){
-        //         piece.transform.SetParent(this.transform);
-        //     }
-        // }
+        public void DeSelectSide(){
+            if(m_rotationLocked) return;
+            foreach(var piece in m_currentSide.m_center.m_piecesBeside){
+                piece.transform.SetParent(this.transform);
+            }
+        }
 
         /// <summary> Initialises all needed components to scramble cube </summary>
         public void Scramble(){
@@ -119,14 +119,16 @@ namespace Cube
 
         /// <summary> Apply scramble through time </summary>
         private void ApplyScramble() {
-            if(m_rotationLocked) return ; 
+            if(!m_rotationLocked){
+                Side moveSide = moves.Dequeue();
+                SelectSide(moveSide);
 
-            Side moveSide = moves.Dequeue();
-            SelectSide(moveSide);
+                m_currentSide.Rotate(UnityEngine.Random.Range(0, 2) == 0, m_speed);
 
-            m_currentSide.Rotate(UnityEngine.Random.Range(0, 2) == 0, m_speed);
+                m_startScramble = moves.Count > 0;
+            }
 
-            m_startScramble = moves.Count > 0;
+            
         }
     }
 

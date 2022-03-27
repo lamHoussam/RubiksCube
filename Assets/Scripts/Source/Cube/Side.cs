@@ -11,7 +11,7 @@ namespace Cube {
         [SerializeField] private Cube m_cube;
         public FaceColor m_color => color;
 
-        private Vector3 m_targetRotation, m_rotationAxis;
+        private Vector3 m_targetRotation, m_rotationAxis, m_initRot;
         private float m_targetAngle, m_speed;
         private float m_angle, m_coeff;
         private bool m_startRotation = false;
@@ -22,7 +22,7 @@ namespace Cube {
             m_rotationAxis = -GetComponent<BoxCollider>().center.normalized; 
         }
 
-        private void Update() {
+        private void FixedUpdate() {
             if(m_startRotation) ApplyRotation();
         }
 
@@ -35,6 +35,7 @@ namespace Cube {
             m_targetAngle = m_coeff * 90;
 
             m_targetRotation = transform.eulerAngles + m_rotationAxis * m_targetAngle;
+            m_initRot = transform.eulerAngles;
 
             Debug.Log(transform.forward);
             m_speed = speed;
@@ -49,23 +50,28 @@ namespace Cube {
         /// <summary> Apply initialised rotation </summary>
         private void ApplyRotation(){
             if(m_angle < 90){
-                transform.Rotate(transform.forward, m_coeff * m_speed * Time.deltaTime, Space.World);
+                GetComponent<Rigidbody>().MoveRotation(Quaternion.Euler(transform.eulerAngles + m_coeff * m_speed * Time.deltaTime * m_rotationAxis));
+                // transform.rotation = Quaternion.AngleAxis (m_coeff * m_speed * Time.deltaTime, transform.forward) * transform.rotation;
+                // transform.Rotate(transform.forward, m_coeff * m_speed * Time.deltaTime, Space.World);
                 m_angle += m_coeff * m_speed * Time.deltaTime;
             }
             
             if(Mathf.Abs(m_angle) >= 90){ 
                 transform.rotation = Quaternion.Euler(m_targetRotation);
+                // yield return new WaitForSeconds(.2f);
                 OnStopRotation(); 
             }
         }
         private void OnStopRotation(){
-            Debug.Log("End");
+            // Debug.Log("End");
+
+            // m_cube.DeSelectSide();
             m_startRotation = false;
             m_cube.m_rotationLocked = false;
         }
 
         private void OnMouseDown() {
-            Debug.Log($"Hit : {m_color}");
+            // Debug.Log($"Hit : {m_color}");
             m_cube.SelectSide(m_color);
         }        
     }
