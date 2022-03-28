@@ -12,10 +12,12 @@ namespace Cube
         public bool m_rotationLocked { get; set; }
         [SerializeField] private UnityEngine.UI.Image m_selectedPanel;
         [SerializeField] private float m_speed;
-        [SerializeField] private AudioClip m_rotationSound;
-        private AudioSource m_audioSource;
+        [SerializeField] private int m_minScrambleMoves, m_maxScrambleMoves;
+        public AudioClip m_rotationSound;
+        public AudioSource m_audioSource { get ; private set ; }
         private bool m_startScramble;
         private Queue<Side> moves;
+        [SerializeField] private GameObject cubePrefab;
         private void Start() {
             m_sides = gameObject.GetComponentsInChildren<Side>();
             m_currentSide = m_sides[0];
@@ -37,7 +39,6 @@ namespace Cube
             if(Input.GetKeyDown(KeyCode.Space) && !m_rotationLocked){
 
                 m_currentSide.Rotate(!Input.GetKey(KeyCode.LeftShift), m_speed);
-                m_audioSource.PlayOneShot(m_rotationSound);
             } 
         }
 
@@ -90,7 +91,7 @@ namespace Cube
             
             moves = new Queue<Side>();
 
-            int numberOfMoves = UnityEngine.Random.Range(20, 21);
+            int numberOfMoves = UnityEngine.Random.Range(m_minScrambleMoves, m_maxScrambleMoves);
             int ind;
             for(int i = 0; i < numberOfMoves; i++){
                 ind = UnityEngine.Random.Range(0, m_sides.Length);
@@ -104,17 +105,21 @@ namespace Cube
 
         /// <summary> Reset cube to initial state </summary>
         public void Reset(){
+            
+            // Instantiate(cubePrefab, transform.position, transform.rotation);
+
+            // Destroy(this);
+
+            DeSelectSide();
+
+            m_startScramble = false;
+            m_rotationLocked = false;
+            
             foreach(var side in m_sides){
                 foreach(var piece in side.m_center.m_piecesBeside){
                     piece.Reset();
                 }
-
-                side.m_center.m_piecesBeside.Clear();
             }
-
-            m_startScramble = false;
-            m_rotationLocked = false;
-
         }
 
         /// <summary> Apply scramble through time </summary>

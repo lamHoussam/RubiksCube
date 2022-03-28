@@ -31,6 +31,8 @@ namespace Cube {
         /// <param name="speed"> Speed to rotate the side at <param>
         public void Rotate(bool reverse, float speed) {
             if(m_startRotation) return;
+
+            m_cube.m_audioSource.PlayOneShot(m_cube.m_rotationSound);
             m_coeff = reverse ? 1 : -1;
             m_targetAngle = m_coeff * 90;
 
